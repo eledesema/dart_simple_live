@@ -17,7 +17,17 @@ jobs:
           ref: master
 
       # 【修改点 2】：删除了会报错的 Download Android keystore 和 Create key.properties
-
+      
+      # 自动生成临时 Android 签名 (解决 key.properties 缺失报错)
+      - name: Create temporary Android keystore
+        run: |
+          keytool -genkey -v -keystore simple_live_app/android/app/test.jks -storepass 123456 -alias testkey -keypass 123456 -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Test,OU=Test,O=Test,L=Test,ST=Test,C=US"
+          KEYSTORE_PATH=$(pwd)/simple_live_app/android/app/test.jks
+          echo "storeFile=$KEYSTORE_PATH" > simple_live_app/android/key.properties
+          echo "storePassword=123456" >> simple_live_app/android/key.properties
+          echo "keyPassword=123456" >> simple_live_app/android/key.properties
+          echo "keyAlias=testkey" >> simple_live_app/android/key.properties
+          
       # 设置JAVA环境
       - uses: actions/setup-java@v4
         with:
