@@ -21,6 +21,7 @@ jobs:
           ref: dev
 
       # 【修改点 1】：删除了会报错的 Download Android keystore 和 Create key.properties 两段
+      
       # 自动生成临时 Android 签名 (解决 key.properties 缺失报错)
       - name: Create temporary Android keystore
         run: |
